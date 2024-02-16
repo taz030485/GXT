@@ -6,22 +6,27 @@ using UnityEngine.InputSystem;
 public class PointerManager : MonoBehaviour
 {
     bool buttonDown = false;
-    Vector2 startPosition = Vector2.zero;
-    Vector2 currentPosition = Vector2.zero;
+    static Vector3 startPosition = Vector3.zero;
+    Plane plane = new Plane(Vector3.up, 0);
 
-    public delegate void StartAction(Vector2 position);
+    public static Vector3 StartPos
+    {
+        get 
+        {
+            return startPosition;
+        }
+    }
+
+    public delegate void StartAction(Vector3 position);
     public static event StartAction OnStart;
 
-    public delegate void MoveAction(Vector2 position);
+    public delegate void MoveAction(Vector3 position);
     public static event MoveAction OnMove;
 
-    public delegate void StopAction(Vector2 position);
+    public delegate void StopAction(Vector3 position);
     public static event StopAction OnStop;
 
-    void Start()
-    {
-        
-    }
+    public Camera mainCamera;
 
     public void OnClick(InputAction.CallbackContext context)
     {
@@ -29,23 +34,37 @@ public class PointerManager : MonoBehaviour
         if (buttonDown)
         {
             // Button pressed / Touch started
-            startPosition = Pointer.current.position.value;
+            Vector2 screenPosition = Pointer.current.position.value;
+            Ray ray = mainCamera.ScreenPointToRay(screenPosition);
+
+            if (plane.Raycast(ray, out float distance))
+            {
+                startPosition = ray.GetPoint(distance);
+            }
 
             if(OnStart != null)
             {
                 OnStart(startPosition);
             }
-            Debug.Log("Start: "+startPosition);
+            //Debug.Log("Start: "+startPosition);
+
         }else{
 
             // Button released / Touch ended
-            Vector2 releasedPosition = Pointer.current.position.value;
+            Vector3 releasedPosition = Vector3.zero;
+            Vector2 screenPosition = Pointer.current.position.value;
+            Ray ray = mainCamera.ScreenPointToRay(screenPosition);
+            
+            if (plane.Raycast(ray, out float distance))
+            {
+                releasedPosition = ray.GetPoint(distance);
+            }
             
             if(OnStop != null)
             {
                 OnStop(releasedPosition);
             }
-            Debug.Log("End: "+releasedPosition);
+            //Debug.Log("End: "+releasedPosition);
         }
     }
 
@@ -53,12 +72,20 @@ public class PointerManager : MonoBehaviour
     {
         if (buttonDown)
         {
-            currentPosition = context.ReadValue<Vector2>();
+            Vector3 currentPosition = Vector3.zero;
+            Vector2 screenPosition = context.ReadValue<Vector2>();
+            Ray ray = mainCamera.ScreenPointToRay(screenPosition);
+            
+            if (plane.Raycast(ray, out float distance))
+            {
+                currentPosition = ray.GetPoint(distance);
+            }
+
             if(OnMove != null)
             {
                 OnMove(currentPosition);
             }
-            Debug.Log("Move: "+currentPosition);
+            //Debug.Log("Move: "+currentPosition);
         }
     }
 }
