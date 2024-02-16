@@ -37,19 +37,17 @@ public class CameraManager : MonoBehaviour
 
     private void PointerMove(Vector3 position)
     {
-        if (CameraMoving)
-        {
-            Vector3 moveDifference = PointerStartPosition - position;
-            Debug.Log(moveDifference);
-            transform.position = CameraStartPosition + moveDifference;
-        }
+        if (!CameraMoving) return;
+        
+        Vector3 moveDifference = PointerStartPosition - position;
+        //Debug.Log(moveDifference);
+        transform.position = CameraStartPosition + moveDifference;
     }
 
     private void PointerStop(Vector3 position)
     {
-        if (CameraMoving)
-        {
-            CameraMoving = false;
-        }
+        if (!CameraMoving) return;
+        
+        CameraMoving = false;
     }
 }
