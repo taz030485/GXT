@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraManager : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class CameraManager : MonoBehaviour
     public Grid grid;
 
     static bool CameraMoving = false;
-    static Vector3 CameraStartPosition = Vector3.zero;
-    static Vector3 PointerStartPosition = Vector3.zero;
+    Vector2 lastPointerPos = Vector2.zero;
 
     private void Awake()
     {
@@ -24,27 +24,27 @@ public class CameraManager : MonoBehaviour
         PointerManager.OnStop += PointerStop;
     }
 
-    private void PointerStart(Vector3 position)
+    private void PointerStart(Vector3 position, Vector2 screenPosition)
     {
         Vector3Int gridPosition = grid.WorldToCell(position);
         if (!Player.PlayerUnderPointer(gridPosition))
         {
-            PointerStartPosition = position;
-            CameraStartPosition = transform.position;
+            lastPointerPos = screenPosition;
             CameraMoving = true;
         }
     }
 
-    private void PointerMove(Vector3 position)
+    private void PointerMove(Vector3 position, Vector2 screenPosition)
     {
         if (!CameraMoving) return;
         
-        Vector3 moveDifference = PointerStartPosition - position;
-        //Debug.Log(moveDifference);
-        transform.position = CameraStartPosition + moveDifference;
+        Vector2 moveDifference = lastPointerPos - screenPosition;
+        Vector3 worldDiff = new(moveDifference.x, 0, moveDifference.y);
+        transform.position = transform.position + worldDiff* 0.005f;
+        lastPointerPos = screenPosition;
     }
 
-    private void PointerStop(Vector3 position)
+    private void PointerStop(Vector3 position, Vector2 screenPosition)
     {
         if (!CameraMoving) return;
         

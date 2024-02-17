@@ -1085,29 +1085,29 @@ Tilemap:
     m_Data:
       e00: 0
       e01: 0
-      e02: 4.5000076
-      e03: 4.5000076
+      e02: -3.5652734e+29
+      e03: -3.5652734e+29
       e10: 0
       e11: 0
-      e12: 5.35e-43
-      e13: 5.35e-43
-      e20: 6.345112e+25
-      e21: 1.7821736e-21
-      e22: -7.298682e-29
-      e23: 4.7721116e-10
+      e12: 8.27e-43
+      e13: 8.27e-43
+      e20: NaN
+      e21: -0.0013620425
+      e22: 0.0000000012766863
+      e23: -2.0739098
       e30: 4.5905e-41
-      e31: 5.38e-43
-      e32: 5.35e-43
-      e33: 5.38e-43
+      e31: 8.3e-43
+      e32: 8.28e-43
+      e33: 8.3e-43
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: 3.4144e-41, g: 3.4144e-41, b: 3.4144e-41, a: 3.4144e-41}
   - m_RefCount: 0
     m_Data: {r: 3.4206e-41, g: 3.4206e-41, b: 3.4206e-41, a: 3.4206e-41}
   - m_RefCount: 0
-    m_Data: {r: 3.4136e-41, g: 3.4136e-41, b: 3.4136e-41, a: 3.4136e-41}
+    m_Data: {r: 3.4242e-41, g: 3.4242e-41, b: 3.4242e-41, a: 3.4242e-41}
   - m_RefCount: 0
-    m_Data: {r: 3.4147e-41, g: 3.4147e-41, b: 3.4147e-41, a: 3.4147e-41}
+    m_Data: {r: 3.4175e-41, g: 3.4175e-41, b: 3.4175e-41, a: 3.4175e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2722,6 +2722,8 @@ MonoBehaviour:
   redIndicator: {fileID: 11400000, guid: 63369e2cbaeedda42b7f4feaffa88607, type: 2}
   blueIndicator: {fileID: 11400000, guid: f8c85e4a86d73e844bf9ed0015b90e31, type: 2}
   greyIndicator: {fileID: 11400000, guid: 84288d79a3960034aa3a80a99c7cc126, type: 2}
+  blueArrorPrefab: {fileID: -4307244646686749378, guid: 3ece833b8bdb3b34daa18e2cdeafaf5d, type: 3}
+  redArrorPrefab: {fileID: 9205762549160851634, guid: 3977715ad60f5794294478bb3f8cc772, type: 3}
 --- !u!1 &1508457928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2731,6 +2733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1508457929}
+  - component: {fileID: 1508457930}
   m_Layer: 0
   m_Name: Enemy Base
   m_TagString: Untagged
@@ -2754,6 +2757,18 @@ Transform:
   - {fileID: 1567953815}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1508457930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508457928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea93698b9c4311489fbce9e79a7cc96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1567953815 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4843028258353612, guid: 676b18dce2fb46c6bd91fe173e587304, type: 3}
@@ -2944,12 +2959,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 441699246}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: OnPoint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a53ab2f5-0e5b-4c9c-a755-3c8a59324d90
     m_ActionName: UI/Point[/Mouse/position]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 838197022}
         m_TargetAssemblyTypeName: PointerManager, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 441699246}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 0
         m_Arguments:

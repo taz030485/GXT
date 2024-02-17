@@ -17,6 +17,8 @@ public class GridManager : MonoBehaviour
     public Hex mountainSO;
 
     static Dictionary<Vector3Int, Hex.HexType> mapData = new();
+    static Dictionary<Vector3Int, Enemy> enemies = new();
+    static Dictionary<Vector3Int, Echo> echos = new();
 
     private void Awake()
     {
@@ -39,7 +41,6 @@ public class GridManager : MonoBehaviour
     void Spawn(Vector3Int position, Hex.HexType hexType)
     {
         mapData.Add(position, hexType);
-        Debug.Log(position + " " + hexType);
         Vector3 spawnPosition = grid.CellToWorld(position);
 
         switch (hexType)
@@ -58,8 +59,29 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public static void AddEnemy(Enemy enemy)
+    {
+        Vector3 enemyPosition = enemy.transform.position;
+        Vector3Int enemyGridPosition = manager.grid.WorldToCell(enemyPosition);
+        enemies.Add(enemyGridPosition, enemy);
+    }
+
+    public static bool TileHasEnemy(Vector3Int tilePosition)
+    {
+        if (enemies.TryGetValue(tilePosition, out Enemy enemy))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public static bool TileFree(Vector3Int tilePosition)
     {
+        if (echos.TryGetValue(tilePosition, out Echo echo))
+        {
+            return false;
+        }
+
         if (mapData.TryGetValue(tilePosition, out Hex.HexType type))
         {
             if (type != Hex.HexType.Mountain)
@@ -67,6 +89,7 @@ public class GridManager : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
 }

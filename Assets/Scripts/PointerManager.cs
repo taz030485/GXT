@@ -17,13 +17,13 @@ public class PointerManager : MonoBehaviour
         }
     }
 
-    public delegate void StartAction(Vector3 position);
+    public delegate void StartAction(Vector3 position, Vector2 screenPosition);
     public static event StartAction OnStart;
 
-    public delegate void MoveAction(Vector3 position);
+    public delegate void MoveAction(Vector3 position, Vector2 screenPosition);
     public static event MoveAction OnMove;
 
-    public delegate void StopAction(Vector3 position);
+    public delegate void StopAction(Vector3 position, Vector2 screenPosition);
     public static event StopAction OnStop;
 
     public Camera mainCamera;
@@ -44,7 +44,7 @@ public class PointerManager : MonoBehaviour
 
             if(OnStart != null)
             {
-                OnStart(startPosition);
+                OnStart(startPosition, screenPosition);
             }
             //Debug.Log("Start: "+startPosition);
 
@@ -62,7 +62,7 @@ public class PointerManager : MonoBehaviour
             
             if(OnStop != null)
             {
-                OnStop(releasedPosition);
+                OnStop(releasedPosition, screenPosition);
             }
             //Debug.Log("End: "+releasedPosition);
         }
@@ -83,7 +83,7 @@ public class PointerManager : MonoBehaviour
 
             if(OnMove != null)
             {
-                OnMove(currentPosition);
+                OnMove(currentPosition, screenPosition);
             }
             //Debug.Log("Move: "+currentPosition);
         }
