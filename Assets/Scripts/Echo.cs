@@ -49,7 +49,7 @@ public class Echo : MonoBehaviour
                 break;
             case ActionsManager.ActionType.Attack:
                 //Attack
-                Debug.Log("attack");
+                
                 break; 
             default:
                 break;

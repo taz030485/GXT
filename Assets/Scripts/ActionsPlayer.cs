@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActionsPlayer : MonoBehaviour
 {
@@ -21,15 +22,28 @@ public class ActionsPlayer : MonoBehaviour
     }
 
     public float playspeed = 1;
+    public Image border;
+    public Toggle toggle;
 
     private void Awake()
     {
         manager = this;
     }
 
+    public void ToggleChanged(bool toggle)
+    {
+        if (toggle)
+        {
+            playspeed = 5;
+        }else{
+            playspeed = 1;
+        }
+    }
+
     public static void PlayActions()
     {
         playing = true;
+        manager.border.color = Color.red;
         if (OnResetActions != null)
         {
             OnResetActions();
@@ -48,6 +62,7 @@ public class ActionsPlayer : MonoBehaviour
             yield return new WaitForSeconds(1/playspeed);
         }
         playing = false;
+        border.color = Color.green;
         ActionsManager.ClearActions();
     }
 }
