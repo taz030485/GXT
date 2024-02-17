@@ -57,7 +57,7 @@ public class ActionsManager : MonoBehaviour
 
     private void Start()
     {
-        manager.text.text = string.Format(baseText, actionsLeft);
+        text.text = string.Format(baseText, actionsLeft);
     }
 
     public static void AddAction(ActionType type, Vector3Int position)

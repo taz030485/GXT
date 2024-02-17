@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -20,6 +21,8 @@ public class Enemy : MonoBehaviour
     Vector3Int position;
 
     public EnemyHealthBar enemyHealthBar;
+    public TextMeshProUGUI text;
+    string textBase;
 
     private void OnEnable()
     {
@@ -35,6 +38,8 @@ public class Enemy : MonoBehaviour
     {
         position = GridManager.AddEnemy(this);
         currentHealth = maxHealth;
+        textBase = text.text;
+        text.text = string.Format(textBase, currentHealth, maxHealth);
     }
 
     void ResetActions()
@@ -42,6 +47,7 @@ public class Enemy : MonoBehaviour
         if (reward.type != Reward.RewardType.CheckPoint)
         {
             currentHealth = maxHealth;
+            text.text = string.Format(textBase, currentHealth, maxHealth);
             enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
             enemyHealthBar.Show();
         }
@@ -50,6 +56,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -=damage;
+        text.text = string.Format(textBase, currentHealth, maxHealth);
         enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
         if (currentHealth <= 0)
         {

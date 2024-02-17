@@ -10,6 +10,7 @@ public class Reward : ScriptableObject
         ActionIncrease,
         DamageIncrease,
         CheckPoint,
+        Victory
     }
 
     public RewardType type;
@@ -27,6 +28,9 @@ public class Reward : ScriptableObject
                 break;
             case RewardType.CheckPoint:
                 Player.checkpoint = position;
+                break;
+            case RewardType.Victory:
+                // End Game
                 break;
             default:
                 break;

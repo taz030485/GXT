@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,9 @@ public class Player : MonoBehaviour
 
     static Vector3Int playerPosition = Vector3Int.zero;
     public static Vector3Int checkpoint = Vector3Int.zero;
+
+    public TextMeshProUGUI text;
+    static string baseText;   
 
     static int damage = 1;
     public static int Damage
@@ -23,6 +27,7 @@ public class Player : MonoBehaviour
     public static void DamageIncrease(int numDamage)
     {
         damage += numDamage;
+        manager.text.text = string.Format(baseText, damage);
     }
 
     private void Awake()
@@ -31,6 +36,8 @@ public class Player : MonoBehaviour
         playerPosition = Vector3Int.zero;
         checkpoint = Vector3Int.zero;
         damage = 1;
+        baseText = text.text;
+        text.text = string.Format(baseText, damage);
     }
 
     public static void ResetTo(Vector3Int position)
