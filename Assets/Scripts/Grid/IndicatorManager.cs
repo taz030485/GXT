@@ -37,16 +37,21 @@ public class IndicatorManager : MonoBehaviour
         PointerManager.OnStop += PointerStop;
     }
 
+    private void OnDisable()
+    {
+        PointerManager.OnStart -= PointerStart;
+        PointerManager.OnMove -= PointerMove;
+        PointerManager.OnStop -= PointerStop;
+    }
+
     private void PointerStart(Vector3 position, Vector2 screenPosition)
     {
+        if (ActionsPlayer.Playing) return;
+
         Vector3Int gridPosition = grid.WorldToCell(position);
         if (Player.PlayerUnderPointer(gridPosition))
         {
-            playerPosition = gridPosition;
-            AddToPath(gridPosition);
-            HighlightNeighbors(gridPosition);
-            lastPointerPosition = gridPosition;
-            movingPlayer = true;
+            AddStart(gridPosition);
         }
     }
 
@@ -59,6 +64,15 @@ public class IndicatorManager : MonoBehaviour
 
         if (gridPosition != lastPointerPosition)
         {
+            if (gridPosition == playerPosition)
+            {
+                ClearNeighbors(lastPointerPosition);
+                ClearPath();
+                path.Clear();
+                AddStart(gridPosition);
+                return;
+            }
+
             if (path.Contains(gridPosition))
             {
                 ClearNeighbors(lastPointerPosition);
@@ -73,6 +87,10 @@ public class IndicatorManager : MonoBehaviour
                 }
             }
 
+            if (!Hex.IsNeighbor(lastPointerPosition, gridPosition)) return;
+
+            if (ActionsManager.ActionsLeft == 0) return;
+
             if (!foundEnemy)
             {
                 if (GridManager.TileHasEnemy(gridPosition))
@@ -80,23 +98,26 @@ public class IndicatorManager : MonoBehaviour
                     ClearNeighbors(lastPointerPosition);
                     AttackPosition(gridPosition);
                     AddAttack(lastPointerPosition, gridPosition);
+                    lastPointerPosition = gridPosition;
 
                     // Stop expanding
                     foundEnemy = true;
-                }else{
-                    if (GridManager.TileFree(gridPosition))
+                } else if (GridManager.TileFree(gridPosition))
+                {
+                    ClearNeighbors(lastPointerPosition);
+                    AddToPath(gridPosition);
+                    if (path.Count > 1)
                     {
-                        ClearNeighbors(lastPointerPosition);
-                        AddToPath(gridPosition);
-                        if (path.Count > 1)
-                        {
-                            AddArrow(lastPointerPosition, gridPosition);
-                        }
-                        HighlightNeighbors(gridPosition);
+                        AddArrow(lastPointerPosition, gridPosition);
                     }
+
+                    if (ActionsManager.ActionsLeft != 0) HighlightNeighbors(gridPosition);
+
+                    lastPointerPosition = gridPosition;
+                }else{
+                    // Mountain
                 }
             }
-            lastPointerPosition = gridPosition;
         }
     }
 
@@ -105,14 +126,21 @@ public class IndicatorManager : MonoBehaviour
         if (!movingPlayer) return;
 
         Vector3Int gridPosition = grid.WorldToCell(position);
+        
+        // Do Actions
+        if (gridPosition != playerPosition && GridManager.TileFree(gridPosition))
+        {
+            ActionsManager.DoActions();
+        }
+
+        // Cleanup
+        ClearNeighbors(lastPointerPosition);
         ClearNeighbors(gridPosition);
         ClearPath();
         path.Clear();
         indicatorTileMap.SetTile(gridPosition, null);
         movingPlayer = false;
         foundEnemy = false;
-
-        // Do Actions
     }
 
     void HighlightNeighbors(Vector3Int centrePosition)
@@ -146,6 +174,17 @@ public class IndicatorManager : MonoBehaviour
         }
     }
 
+    void AddStart(Vector3Int position)
+    {
+        playerPosition = position;
+        ActionsManager.AddAction(ActionsManager.ActionType.Start, position);
+        AddToPath(position);
+        HighlightNeighbors(position);
+        lastPointerPosition = position;
+        movingPlayer = true;
+        foundEnemy = false;
+    }
+
     void AttackPosition(Vector3Int position)
     {
         indicatorTileMap.SetTile(position, redIndicator);
@@ -163,6 +202,7 @@ public class IndicatorManager : MonoBehaviour
         Arrow arrow = Instantiate<Arrow>(blueArrorPrefab, transform);
         arrow.PointAt(grid.CellToWorld(position), grid.CellToWorld(target));
         arrows.Add(arrow);
+        ActionsManager.AddAction(ActionsManager.ActionType.Move, target);
     }
 
     void AddAttack(Vector3Int position, Vector3Int target)
@@ -170,6 +210,10 @@ public class IndicatorManager : MonoBehaviour
         Arrow arrow = Instantiate<Arrow>(redArrorPrefab, transform);
         arrow.PointAt(grid.CellToWorld(position), grid.CellToWorld(target));
         arrows.Add(arrow);
+        while (ActionsManager.ActionsLeft > 0)
+        {
+            ActionsManager.AddAction(ActionsManager.ActionType.Attack, target);
+        }
     }
 
     void ShowPath()
@@ -181,6 +225,8 @@ public class IndicatorManager : MonoBehaviour
             if (i != 0)
             {
                 AddArrow(path[i-1], node);
+            }else{
+                ActionsManager.AddAction(ActionsManager.ActionType.Start, node);
             }
         }
     }
@@ -197,5 +243,6 @@ public class IndicatorManager : MonoBehaviour
             Destroy(arrow.gameObject);
         }
         arrows.Clear();
+        ActionsManager.ClearActions();
     }
 }

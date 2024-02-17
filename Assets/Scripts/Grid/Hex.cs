@@ -53,4 +53,13 @@ public class Hex : ScriptableObject
         yield return neighborPos;
         }
     }
+
+    public static bool IsNeighbor(Vector3Int centre, Vector3Int node)
+    {
+        foreach (var item in Neighbors(centre))
+        {
+            if (node == item) return true;
+        }
+        return false;
+    }
 }

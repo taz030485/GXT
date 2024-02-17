@@ -24,6 +24,13 @@ public class CameraManager : MonoBehaviour
         PointerManager.OnStop += PointerStop;
     }
 
+    private void OnDisable()
+    {
+        PointerManager.OnStart -= PointerStart;
+        PointerManager.OnMove -= PointerMove;
+        PointerManager.OnStop -= PointerStop;
+    }
+
     private void PointerStart(Vector3 position, Vector2 screenPosition)
     {
         Vector3Int gridPosition = grid.WorldToCell(position);
@@ -40,7 +47,7 @@ public class CameraManager : MonoBehaviour
         
         Vector2 moveDifference = lastPointerPos - screenPosition;
         Vector3 worldDiff = new(moveDifference.x, 0, moveDifference.y);
-        transform.position = transform.position + worldDiff* 0.005f;
+        transform.localPosition = transform.localPosition + worldDiff* 0.005f;
         lastPointerPos = screenPosition;
     }
 

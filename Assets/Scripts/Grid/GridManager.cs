@@ -16,6 +16,8 @@ public class GridManager : MonoBehaviour
     public Tile mountain;
     public Hex mountainSO;
 
+    public Echo echoPrefab;
+
     static Dictionary<Vector3Int, Hex.HexType> mapData = new();
     static Dictionary<Vector3Int, Enemy> enemies = new();
     static Dictionary<Vector3Int, Echo> echos = new();
@@ -91,5 +93,14 @@ public class GridManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public static void AddEcho(List<ActionsManager.Action> actions)
+    {
+        Echo echo = Instantiate<Echo>(manager.echoPrefab, manager.transform);
+        echo.SetGrid(manager.grid);
+        //Debug.Log(actions[0].position + " " + actions[0].type);
+        Vector3Int position = echo.SetActions(actions);
+        echos.Add(position, echo);
     }
 }
