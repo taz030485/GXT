@@ -25,6 +25,9 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         manager = this;
+        mapData = new();
+        enemies = new();
+        echos = new();
     }
 
     private void Start()

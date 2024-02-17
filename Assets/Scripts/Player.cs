@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         manager = this;
+        playerPosition = Vector3Int.zero;
+        checkpoint = Vector3Int.zero;
+        damage = 1;
     }
 
     public static void ResetTo(Vector3Int position)

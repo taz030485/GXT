@@ -49,6 +49,8 @@ public class PointerManager : MonoBehaviour
             //Debug.Log("Start: "+startPosition);
 
         }else{
+            
+            if (mainCamera == null) return;
 
             // Button released / Touch ended
             Vector3 releasedPosition = Vector3.zero;

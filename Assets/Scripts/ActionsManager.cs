@@ -51,6 +51,8 @@ public class ActionsManager : MonoBehaviour
     {
         manager = this;
         baseText = text.text;
+        maxActions = 5;
+        actionsLeft = 5;
     }
 
     private void Start()

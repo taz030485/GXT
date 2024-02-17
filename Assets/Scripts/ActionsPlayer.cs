@@ -37,11 +37,17 @@ public class ActionsPlayer : MonoBehaviour
     private void Awake()
     {
         manager = this;
+        playing = false;
     }
 
-    public void ToggleChanged(bool toggle)
+    private void Start()
     {
-        if (toggle)
+        toggle.isOn = playspeed == 5;
+    }
+
+    public void ToggleChanged(bool toggleValue)
+    {
+        if (toggleValue)
         {
             playspeed = 5;
         }else{
