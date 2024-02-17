@@ -44,14 +44,31 @@ public class IndicatorManager : MonoBehaviour
         PointerManager.OnStop -= PointerStop;
     }
 
+    public void ResetTurn()
+    {
+        if (!ActionsPlayer.Playing)
+        {
+            Cleanup(lastPointerPosition);
+            Player.ResetTo(Player.checkpoint);
+        }
+    }
+
     private void PointerStart(Vector3 position, Vector2 screenPosition)
     {
         if (ActionsPlayer.Playing) return;
 
         Vector3Int gridPosition = grid.WorldToCell(position);
+
         if (Player.PlayerUnderPointer(gridPosition))
         {
-            AddStart(gridPosition);
+            if (path.Count == 0)
+            {
+                Cleanup(lastPointerPosition);
+                AddStart(gridPosition);
+            }else{
+                HighlightNeighbors(gridPosition);
+            }
+            movingPlayer = true;
         }
     }
 
@@ -70,6 +87,7 @@ public class IndicatorManager : MonoBehaviour
                 ClearPath();
                 path.Clear();
                 AddStart(gridPosition);
+                Player.ResetTo(path[path.Count-1]);
                 return;
             }
 
@@ -77,7 +95,7 @@ public class IndicatorManager : MonoBehaviour
             {
                 ClearNeighbors(lastPointerPosition);
                 ClearPath();
-                int index = path.IndexOf(gridPosition);
+                int index = path.IndexOf(gridPosition) + 1;
                 path.RemoveRange(index, path.Count - index);
                 ShowPath();
                 foundEnemy = false;
@@ -85,6 +103,8 @@ public class IndicatorManager : MonoBehaviour
                 {
                     lastPointerPosition = path[path.Count-1];
                 }
+                HighlightNeighbors(gridPosition);
+                return;
             }
 
             if (!Hex.IsNeighbor(lastPointerPosition, gridPosition)) return;
@@ -109,6 +129,7 @@ public class IndicatorManager : MonoBehaviour
                     if (path.Count > 1)
                     {
                         AddArrow(lastPointerPosition, gridPosition);
+                        Player.MoveTo(gridPosition);
                     }
 
                     if (ActionsManager.ActionsLeft != 0) HighlightNeighbors(gridPosition);
@@ -127,12 +148,30 @@ public class IndicatorManager : MonoBehaviour
 
         Vector3Int gridPosition = grid.WorldToCell(position);
         
-        // Do Actions
-        if (gridPosition != playerPosition && GridManager.TileFree(gridPosition))
+        if (gridPosition == playerPosition) 
         {
-            ActionsManager.DoActions();
+            Cleanup(gridPosition);
+            return;
         }
 
+        // Do Actions
+        if (ActionsManager.ActionsLeft == 0)
+        {
+            ActionsManager.DoActions();
+            Player.ResetTo(Player.checkpoint);
+            Cleanup(gridPosition);
+            return;
+        }
+
+        if (GridManager.TileFree(gridPosition))
+        {
+            ClearNeighbors(gridPosition);
+            movingPlayer = false;
+        }
+    }
+
+    void Cleanup(Vector3Int gridPosition)
+    {
         // Cleanup
         ClearNeighbors(lastPointerPosition);
         ClearNeighbors(gridPosition);
@@ -181,7 +220,6 @@ public class IndicatorManager : MonoBehaviour
         AddToPath(position);
         HighlightNeighbors(position);
         lastPointerPosition = position;
-        movingPlayer = true;
         foundEnemy = false;
     }
 
@@ -229,6 +267,7 @@ public class IndicatorManager : MonoBehaviour
                 ActionsManager.AddAction(ActionsManager.ActionType.Start, node);
             }
         }
+        Player.ResetTo(path[path.Count-1]);
     }
 
     void ClearPath()

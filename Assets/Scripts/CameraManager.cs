@@ -12,6 +12,11 @@ public class CameraManager : MonoBehaviour
     static bool CameraMoving = false;
     Vector2 lastPointerPos = Vector2.zero;
 
+    public float xMin = 3;
+    public float xMax = 10;
+    public float zMin = -3;
+    public float zMax = 3;
+
     private void Awake()
     {
         manager = this;
@@ -48,6 +53,7 @@ public class CameraManager : MonoBehaviour
         Vector2 moveDifference = lastPointerPos - screenPosition;
         Vector3 worldDiff = new(moveDifference.x, 0, moveDifference.y);
         transform.localPosition = transform.localPosition + worldDiff* 0.005f;
+        KeepWithBounds();
         lastPointerPos = screenPosition;
     }
 
@@ -56,5 +62,15 @@ public class CameraManager : MonoBehaviour
         if (!CameraMoving) return;
         
         CameraMoving = false;
+    }
+
+    void KeepWithBounds()
+    {
+        Vector3 pos = transform.localPosition;
+        if (pos.x < xMin) pos.x = xMin;
+        if (pos.x > xMax) pos.x = xMax;
+        if (pos.z < zMin) pos.z = zMin;
+        if (pos.z > zMax) pos.z = zMax;
+        transform.localPosition = pos;
     }
 }

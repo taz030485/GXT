@@ -61,11 +61,20 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public static void AddEnemy(Enemy enemy)
+    public static Vector3Int AddEnemy(Enemy enemy)
     {
         Vector3 enemyPosition = enemy.transform.position;
         Vector3Int enemyGridPosition = manager.grid.WorldToCell(enemyPosition);
         enemies.Add(enemyGridPosition, enemy);
+        return enemyGridPosition;
+    }
+
+    public static void RemoveEnemy(Vector3Int tilePosition)
+    {
+        if (enemies.ContainsKey(tilePosition))
+        {
+            enemies.Remove(tilePosition);
+        }
     }
 
     public static bool TileHasEnemy(Vector3Int tilePosition)
@@ -75,6 +84,15 @@ public class GridManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public static Enemy GetEnemy(Vector3Int position)
+    {
+        if (enemies.TryGetValue(position, out Enemy enemy))
+        {
+            return enemy;
+        }
+        return null;
     }
 
     public static bool TileFree(Vector3Int tilePosition)

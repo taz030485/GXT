@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Hex", menuName = "Hex/HexObject", order = 1)]
+[CreateAssetMenu(fileName = "Hex", menuName = "GXT/HexObject", order = 1)]
 public class Hex : ScriptableObject
 {
     public enum HexType
@@ -26,7 +26,11 @@ public class Hex : ScriptableObject
             parent = gameObject.transform;
         }
 
-        Instantiate<GameObject>(prefab, position, Quaternion.identity, parent);
+        float rotation = UnityEngine.Random.Range(0,6)*60;
+
+        Instantiate<GameObject>(prefab, position, Quaternion.Euler(0,rotation,0), parent);
+
+        
     }
 
     static Vector3Int

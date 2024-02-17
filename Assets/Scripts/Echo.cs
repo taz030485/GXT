@@ -49,10 +49,20 @@ public class Echo : MonoBehaviour
                 break;
             case ActionsManager.ActionType.Attack:
                 //Attack
-                
+                StartCoroutine(Attack(action.position, speed));
                 break; 
             default:
                 break;
+        }
+    }
+
+    public IEnumerator Attack(Vector3Int target, float seconds)
+    {
+        yield return new WaitForSeconds(seconds / 2);
+        Enemy enemy = GridManager.GetEnemy(target);
+        if (enemy != null && enemy.IsAlive)
+        {
+            enemy.TakeDamage(Player.Damage);
         }
     }
 

@@ -31,6 +31,11 @@ public class ActionsManager : MonoBehaviour
         }
     }
 
+    public static void AddMaxActions(int numActions)
+    {
+        maxActions += numActions;
+    }
+
     static int actionsLeft = 5;
     public static int ActionsLeft
     {

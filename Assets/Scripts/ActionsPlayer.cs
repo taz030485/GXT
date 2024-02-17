@@ -21,9 +21,18 @@ public class ActionsPlayer : MonoBehaviour
         }
     }
 
-    public float playspeed = 1;
+    public static float playspeed = 1;
+    public static float PlaySpeed
+    {
+        get
+        {
+            return playspeed;
+        }
+    }
+
     public Image border;
     public Toggle toggle;
+    public GameObject resetButton;
 
     private void Awake()
     {
@@ -43,6 +52,7 @@ public class ActionsPlayer : MonoBehaviour
     public static void PlayActions()
     {
         playing = true;
+        manager.resetButton.SetActive(false);
         manager.border.color = Color.red;
         if (OnResetActions != null)
         {
@@ -62,7 +72,9 @@ public class ActionsPlayer : MonoBehaviour
             yield return new WaitForSeconds(1/playspeed);
         }
         playing = false;
+        manager.resetButton.SetActive(true);
         border.color = Color.green;
         ActionsManager.ClearActions();
+        Player.ResetTo(Player.checkpoint);
     }
 }
