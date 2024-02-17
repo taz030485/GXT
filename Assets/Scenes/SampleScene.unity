@@ -868,6 +868,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkeletonPADefault
       objectReference: {fileID: 0}
+    - target: {fileID: 6285209290506305774, guid: a604ffbac01747d6b33aff45d9e3dd8a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 10006a6a2591979428aace154d9c2070, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1302,6 +1306,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3891923349461803650, guid: a36e21f1c0794171a4a0f081fda4134f, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c3e75d7ec3580ee48be2e7df030f7202, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1484,7 +1492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rest Turn
+  m_text: Reset Turn
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8102,6 +8110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DemonKingPADefault
       objectReference: {fileID: 0}
+    - target: {fileID: 8347661630943611774, guid: c851df38d05441a6861cb42d0a8a8bab, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 17ce7a7464b45134496e94185dad0924, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8754,10 +8766,10 @@ Transform:
   - {fileID: 1508457929}
   - {fileID: 930689061}
   - {fileID: 1120831151}
-  - {fileID: 1724737818}
-  - {fileID: 824969453}
   - {fileID: 447306916}
   - {fileID: 246814577}
+  - {fileID: 1724737818}
+  - {fileID: 824969453}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1983027131
@@ -8977,6 +8989,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EvilMagePAMaskTint
       objectReference: {fileID: 0}
+    - target: {fileID: 5360181621240524835, guid: 038e4171a61b46fc804926fcf8f6f673, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c19adce66ada40641aa9079aaafdcef3, type: 2}
     - target: {fileID: 5360181621244792547, guid: 038e4171a61b46fc804926fcf8f6f673, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -11361,6 +11377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 248863474}
   text: {fileID: 127135267}
+  animator: {fileID: 4897945842856018710}
 --- !u!33 &7340622051750988489
 MeshFilter:
   m_ObjectHideFlags: 0

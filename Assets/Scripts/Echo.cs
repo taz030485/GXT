@@ -9,6 +9,7 @@ public class Echo : MonoBehaviour
     public Material solidMaterial;
     public Material transparentMaterial;
     public SkinnedMeshRenderer skinnedMeshRenderer;
+    public Animator animator;
 
     List<ActionsManager.Action> actions;
 
@@ -58,11 +59,13 @@ public class Echo : MonoBehaviour
 
     public IEnumerator Attack(Vector3Int target, float seconds)
     {
-        yield return new WaitForSeconds(seconds / 2);
         Enemy enemy = GridManager.GetEnemy(target);
         if (enemy != null && enemy.IsAlive)
         {
+            animator.SetTrigger("Attack");
+            yield return new WaitForSeconds(seconds / 2);
             enemy.TakeDamage(Player.Damage);
+            animator.SetTrigger("Idle");
         }
     }
 
@@ -70,6 +73,7 @@ public class Echo : MonoBehaviour
     {
 	    float elapsedTime = 0;
 	    Vector3 startingPos = transform.position;
+        animator.SetTrigger("Run");
 	    while (elapsedTime < seconds)
 	    {
     		transform.position = Vector3.Lerp(startingPos, target, (elapsedTime / seconds));
@@ -81,6 +85,7 @@ public class Echo : MonoBehaviour
         {
             BecomeSolid();
         }
+        animator.SetTrigger("Idle");
     }
 
     public Vector3Int SetActions(List<ActionsManager.Action> actions)

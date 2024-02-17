@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI text;
     static string baseText;   
 
+    public Animator animator;
+
     static int damage = 1;
     public static int Damage
     {
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour
     {
 	    float elapsedTime = 0;
 	    Vector3 startingPos = transform.position;
+        animator.SetTrigger("Run");
 	    while (elapsedTime < seconds)
 	    {
     		transform.position = Vector3.Lerp(startingPos, target, (elapsedTime / seconds));
@@ -68,6 +71,7 @@ public class Player : MonoBehaviour
 		    yield return new WaitForEndOfFrame();
 	    }
 	    transform.position = target;
+        animator.SetTrigger("Idle");
     }
 
     public static bool PlayerUnderPointer(Vector3Int position)

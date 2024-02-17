@@ -48,6 +48,7 @@ MonoBehaviour:
   solidMaterial: {fileID: 2100000, guid: 3ce3397bdbcd7f544807aa68ce734eee, type: 2}
   transparentMaterial: {fileID: 2100000, guid: 83ae060e23bd5fb4faf59665112b2ff1, type: 2}
   skinnedMeshRenderer: {fileID: 3293730778203022783}
+  animator: {fileID: 3293730778207099775}
 --- !u!1001 &1916106541859464771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,5 +134,10 @@ Transform:
 --- !u!137 &3293730778203022783 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 3972964382695621628, guid: 93b94039cf7541e8a7c9453819da38f0, type: 3}
+  m_PrefabInstance: {fileID: 1916106541859464771}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3293730778207099775 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3972964382691556668, guid: 93b94039cf7541e8a7c9453819da38f0, type: 3}
   m_PrefabInstance: {fileID: 1916106541859464771}
   m_PrefabAsset: {fileID: 0}

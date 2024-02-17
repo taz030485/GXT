@@ -24,6 +24,8 @@ public class Enemy : MonoBehaviour
     public TextMeshProUGUI text;
     string textBase;
 
+    Animator animator;
+
     private void OnEnable()
     {
         ActionsPlayer.OnResetActions += ResetActions;
@@ -40,6 +42,8 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         textBase = text.text;
         text.text = string.Format(textBase, currentHealth, maxHealth);
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     void ResetActions()
@@ -50,18 +54,30 @@ public class Enemy : MonoBehaviour
             text.text = string.Format(textBase, currentHealth, maxHealth);
             enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
             enemyHealthBar.Show();
+            if (animator != null)
+            {
+                Debug.Log(name);
+                animator.SetTrigger("Reset");
+            }
         }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -=damage;
+        if (animator != null)
+        {
+            animator.SetTrigger("GetHit");
+        }
         text.text = string.Format(textBase, currentHealth, maxHealth);
         enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
         if (currentHealth <= 0)
         {
             enemyHealthBar.Hide();
-            //Die
+            if (animator != null)
+            {
+                animator.SetTrigger("Die");
+            }
             if (!rewardGiven)
             {
                 reward.GiveReward(position);
@@ -69,6 +85,7 @@ public class Enemy : MonoBehaviour
 
                 if (reward.type == Reward.RewardType.CheckPoint)
                 {
+                    gameObject.SetActive(false);
                     GridManager.RemoveEnemy(position);
                 }
             }
