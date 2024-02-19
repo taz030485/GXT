@@ -1,8 +1,8 @@
 # GXT
  GXT Skill Assessment
 
-Windows Download - andrewfaulkner.com.au/gxt/Windows.zip
-WebGL - andrewfaulkner.com.au/gxt/
+Windows Download - http://andrewfaulkner.com.au/gxt/Windows.zip
+WebGL - http://andrewfaulkner.com.au/gxt/
 
 Assets Used
 - RPG Monster BUNDLE Polyart https://assetstore.unity.com/packages/3d/characters/creatures/rpg-monster-bundle-polyart-261480
