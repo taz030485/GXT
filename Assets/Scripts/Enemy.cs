@@ -24,6 +24,9 @@ public class Enemy : MonoBehaviour
     public TextMeshProUGUI text;
     string textBase;
 
+    public AudioSource hurtAudio;
+    public AudioSource deathAudio;
+
     Animator animator;
 
     private void OnEnable()
@@ -56,7 +59,6 @@ public class Enemy : MonoBehaviour
             enemyHealthBar.Show();
             if (animator != null)
             {
-                Debug.Log(name);
                 animator.SetTrigger("Reset");
             }
         }
@@ -68,6 +70,7 @@ public class Enemy : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger("GetHit");
+            hurtAudio.Play();
         }
         text.text = string.Format(textBase, currentHealth, maxHealth);
         enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
@@ -77,11 +80,14 @@ public class Enemy : MonoBehaviour
             if (animator != null)
             {
                 animator.SetTrigger("Die");
+                deathAudio.Play();
             }
             if (!rewardGiven)
             {
                 reward.GiveReward(position);
                 rewardGiven = true;
+
+                RewardUI.ShowReward(reward);
 
                 if (reward.type == Reward.RewardType.CheckPoint)
                 {

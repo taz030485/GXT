@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   value: 5
+  rewardText: You now have 5 more actions.

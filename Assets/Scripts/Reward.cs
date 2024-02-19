@@ -15,6 +15,7 @@ public class Reward : ScriptableObject
 
     public RewardType type;
     public int value;
+    public string rewardText;
 
     public void GiveReward(Vector3Int position)
     {

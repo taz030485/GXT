@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   value: 0
+  rewardText: You found a checkpoint.<br>You will now start each round from here.

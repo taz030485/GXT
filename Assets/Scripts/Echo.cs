@@ -10,6 +10,7 @@ public class Echo : MonoBehaviour
     public Material transparentMaterial;
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public Animator animator;
+    public AudioSource audioSource;
 
     List<ActionsManager.Action> actions;
 
@@ -63,6 +64,7 @@ public class Echo : MonoBehaviour
         if (enemy != null && enemy.IsAlive)
         {
             animator.SetTrigger("Attack");
+            audioSource.Play();
             yield return new WaitForSeconds(seconds / 2);
             enemy.TakeDamage(Player.Damage);
             animator.SetTrigger("Idle");
