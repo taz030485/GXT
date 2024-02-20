@@ -11,6 +11,7 @@ public class Echo : MonoBehaviour
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public Animator animator;
     public AudioSource audioSource;
+    static bool playingAudio = false;
 
     List<ActionsManager.Action> actions;
 
@@ -64,11 +65,24 @@ public class Echo : MonoBehaviour
         if (enemy != null && enemy.IsAlive)
         {
             animator.SetTrigger("Attack");
-            audioSource.Play();
+            if (!playingAudio)
+            {
+                StartCoroutine(PlayAudio());
+            }
             yield return new WaitForSeconds(seconds / 2);
             enemy.TakeDamage(Player.Damage);
             animator.SetTrigger("Idle");
+            yield return new WaitForSeconds(1.0f);
+            animator.SetTrigger("Idle");
         }
+    }
+
+    public IEnumerator PlayAudio()
+    {
+        playingAudio = true;
+        audioSource.Play();
+        yield return new WaitForSeconds(0.75f);
+        playingAudio = false;
     }
 
     public IEnumerator MoveOverSeconds(Vector3 target, float seconds)

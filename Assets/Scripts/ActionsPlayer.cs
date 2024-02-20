@@ -69,7 +69,8 @@ public class ActionsPlayer : MonoBehaviour
 
     IEnumerator PlaySequence()
     {
-        for (int i = 1; i <= ActionsManager.MaxActions; i++)
+        int actions = ActionsManager.MaxActions;
+        for (int i = 1; i <= actions; i++)
         {
             if (OnPlayAction != null)
             {

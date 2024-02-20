@@ -8,6 +8,7 @@ public class CameraManager : MonoBehaviour
     static CameraManager manager = null;
 
     public Grid grid;
+    public Transform cameraTransform;
 
     static bool CameraMoving = false;
     Vector2 lastPointerPos = Vector2.zero;
@@ -20,6 +21,12 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         manager = this;
+        if (Application.isMobilePlatform)
+        {
+            Vector3 position = cameraTransform.localPosition;
+            position.y = 4;
+            cameraTransform.localPosition = position;
+        }
     }
 
     private void OnEnable()

@@ -18,6 +18,11 @@ public class Enemy : MonoBehaviour
 
     public Reward reward;
     bool rewardGiven = false;
+    public bool DiedOnce()
+    {
+        return rewardGiven;
+    }
+
     Vector3Int position;
 
     public EnemyHealthBar enemyHealthBar;
@@ -26,6 +31,7 @@ public class Enemy : MonoBehaviour
 
     public AudioSource hurtAudio;
     public AudioSource deathAudio;
+    static bool playingAudio = false;
 
     Animator animator;
 
@@ -70,7 +76,10 @@ public class Enemy : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger("GetHit");
-            hurtAudio.Play();
+            if (!playingAudio)
+            {
+                StartCoroutine(PlayAudio());
+            }
         }
         text.text = string.Format(textBase, currentHealth, maxHealth);
         enemyHealthBar.UpdateHealthBar(currentHealth / (float)maxHealth);
@@ -96,5 +105,13 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator PlayAudio()
+    {
+        playingAudio = true;
+        hurtAudio.Play();
+        yield return new WaitForSeconds(0.75f);
+        playingAudio = false;
     }
 }
